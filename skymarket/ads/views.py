@@ -1,11 +1,12 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import pagination, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.decorators import action
 
-from .models import Ad
+from .models import Ad, Comment
 from .filters import AdFilter
-from .serializers import AdSerializer, AdDetailSerializer
+from .serializers import AdSerializer, AdDetailSerializer, CommentSerializer
 
 
 class AdPagination(pagination.PageNumberPagination):
@@ -49,4 +50,13 @@ class AdViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    pass
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            return Comment.objects.filter(ad_id=self.kwargs['ad_pk'])
+
+    def perform_create(self, serializer):
+        ad_obj = Ad.objects.get(pk=self.kwargs['ad_pk'])
+        serializer.save(author=self.request.user, ad=ad_obj)

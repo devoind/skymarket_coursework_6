@@ -1,11 +1,15 @@
 from django.urls import include, path
 from rest_framework_nested import routers
 
-from .views import AdViewSet
+from .views import AdViewSet, CommentViewSet
 
-ad_router = routers.SimpleRouter()
-ad_router.register('ads', AdViewSet, basename='ads')
+ads_router = routers.SimpleRouter()
+ads_router.register('ads', AdViewSet, basename='ads')
+
+comments_router = routers.NestedSimpleRouter(ads_router, r'ads', lookup='ad')
+comments_router.register('comments', CommentViewSet, basename='comments')
 
 urlpatterns = [
-    path('', include(ad_router.urls))
+    path('', include(ads_router.urls)),
+    path('', include(comments_router.urls)),
 ]
