@@ -10,10 +10,8 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone = PhoneNumberField()
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     image = models.ImageField(upload_to='media/', null=True, blank=True)
-
-    objects = UserManager()
 
     # Эта константа определяет поле для логина пользователя
     USERNAME_FIELD = 'email'
@@ -21,6 +19,8 @@ class User(AbstractBaseUser):
     # Эта константа содержит список с полями,
     # которые необходимо заполнить при создании пользователя
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', 'role', 'image']
+
+    objects = UserManager()
 
     @property
     def is_admin(self):
