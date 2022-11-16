@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
         это можно сделать с помощью команды createsuperuser
         """
 
-        user = self.create_user(
+        user = self.model(
             email=email,
             first_name=first_name,
             last_name=last_name,
@@ -46,5 +46,7 @@ class UserManager(BaseUserManager):
             role=role,
         )
 
+        user.is_active = True
+        user.set_password(user.password)
         user.save(using=self._db)
         return user

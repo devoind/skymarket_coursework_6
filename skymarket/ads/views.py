@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import pagination, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,6 +8,8 @@ from rest_framework.decorators import action
 from .models import Ad, Comment
 from .filters import AdFilter
 from .serializers import AdSerializer, CommentSerializer
+
+User = get_user_model()
 
 
 class AdPagination(pagination.PageNumberPagination):

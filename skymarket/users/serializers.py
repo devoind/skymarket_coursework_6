@@ -1,6 +1,7 @@
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from rest_framework import serializers
-from ads.models import User
+
+from users.models import User
 
 
 class UserRegistrationSerializer(BaseUserRegistrationSerializer):
